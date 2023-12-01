@@ -1,0 +1,27 @@
+#%RAML 1.0 Library
+types:
+  Standard:
+    displayName: Response Standard Format
+    description: |-
+      This is just an example library type. If this File is not needed, please DELETE it before you publish.
+    type: object
+    properties:
+      code:
+        required: false
+        example: SERVER_ACTIVE
+        description: |
+          Status Code
+        type: string
+      message:
+        required: false
+        example: Server is currently running
+        description: |+
+          Message description in english
+        type: string
+      description:
+        required: false
+        type: string
+      remarks:
+        required: false
+        type: string
+         
