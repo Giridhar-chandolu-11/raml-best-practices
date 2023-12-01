@@ -1,0 +1,227 @@
+#%RAML 1.0 Library
+traits:
+  "create":
+    displayName: Create <<object-name>> Object
+    description: Creating new <<object-name>> object
+    body:
+      <<request-media-type>>:
+        type: <<data-add-type>>
+    responses:
+      201:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-201-type>>
+  "read":
+    displayName: Read <<object-name>> Object
+    description: Retrieving <<object-name>> object
+    responses:
+      200:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-200-type>>
+  "update":
+    displayName: Update <<object-name>> Object
+    description: Updating new <<object-name>> object
+    body:
+      <<request-media-type>>:
+        type: <<data-update-type>>
+    responses:
+      200:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-200-type>>
+  "delete":
+    displayName: Delete <<object-name>> Object
+    description: Deleting <<object-name>> object
+    body:
+      <<request-media-type>>:
+        type: <<data-delete-type>>
+    responses:
+      200:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-200-type>>
+  "generic":
+    displayName: <<object-name>> Object
+    description: <<object-name>> object
+    body:
+      <<request-media-type>>:
+    responses:
+      200:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+  "complexOperation":
+    displayName: Complex Operation for <<object-name>> Object
+    description: Complex Operation for <<object-name>> object
+    body:
+      <<request-media-type>>:
+        type: <<data-complex-type>>
+    responses:
+      200:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-200-type>>
+  "searchOperation":
+    displayName: Search criteria for <<object-name>> Object
+    description: Search criteria for <<object-name>> object
+    body:
+      <<request-media-type>>:
+        type: <<data-search-type>>
+    responses:
+      200:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-200-type>>
+  "noContentResponse":
+    displayName: Update Request For <<object-name>>
+    description: Update processing <<object-name>> request
+    body:
+      <<request-media-type>>:
+        type: <<data-type>>
+    responses:
+      204:
+        headers:
+          x-transaction-id:
+            type: string
+  "asyncRequest":
+    displayName: Async Request For <<object-name>>
+    description: Asyncronoush processing <<object-name>> request
+    body:
+      <<request-media-type>>:
+        type: <<data-async-type>>
+    responses:
+      202:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-202-type>>
+  "queueScheduler":
+    displayName: Request For <<object-name>>
+    description: Request to <<object-name>> for scheduling
+    body:
+      <<request-media-type>>:
+        type: <<data-queue-type>>
+    responses:
+      202:
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-202-type>>
+  "upserting":
+    displayName: Upserting For <<object-name>>
+    description: Request to <<object-name>> for Insert or Update
+    body:
+      <<request-media-type>>:
+        type: <<data-type>>
+    responses:
+      200:
+        description: |-
+          Upserting Existing Records response          
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-type>>
+      201:
+        description: |-
+          Upserting New Records response          
+        headers:
+          x-transaction-id:
+            type: string
+          Content-Type: 
+            type: string
+            default: <<response-media-type>>
+        body:
+          <<response-media-type>>:
+            type: <<response-type>>
+resourceTypes:
+  "create":
+    post:
+      is: [create]
+  "read":
+    post:
+      is: [read]
+  "update":
+    post:
+      is: [update]
+  "delete":
+    post:
+      is: [delete]
+  "complexOperation":
+    post:
+      is: [complexOperation]
+  "searchBy":
+    post:
+      is: [searchOperation]
+  "asyncRequest":
+    post:
+      is: [asyncRequest]
+  "queueScheduler":
+    post:
+      is: [queueScheduler]
+  "noContentUpdate":
+    put:
+      is: [noContentResponse]
+  "upsert":
+    put:
+      is: [upserting]
+  "generic":
+    post:
+      is: [generic]
+
