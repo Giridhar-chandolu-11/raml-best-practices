@@ -1,0 +1,162 @@
+#%RAML 1.0
+title: Clorox Enterprise Customer SAP to Exceedra DB Process API
+
+description: |-
+    Clorox Enterprise Customer SAP to Exceedra DB Process API
+
+    **Published History:**
+    
+    | Asset Version | Published By  | Date / Time | Remarks |
+    |:-------------:| ------------- | ----------- | ------- |
+    | **1.0.0**     | Max Girin     | 2021-02-21  | Initial RAML | 
+    | **1.0.1**     | Max Girin     | 2021-02-23  | Updated with indirect customer mappings operation | 
+
+baseUri: http://anypoint.clorox.com/mule-customer-sap-exceedra-db-papi/{version}
+version: v1.0
+documentation:
+  - title: Overview
+    content: !include docs/Home.md
+  - title: How To Use The API?
+    content: !include docs/HowTo.md
+  - title: Error Handling
+    content: !include docs/ErrorHandling.md
+  - title: Releases
+    content: !include docs/Release.md
+mediaType: application/json
+
+types:
+  Status: !include /resources/types/Status.raml
+  JobStart: !include /resources/types/JobStart.raml
+
+uses: 
+  CustomResponse: /resources/libraries/CustomResponse.raml
+  StandardResponse: /exchange_modules/1674d8b0-3a4f-4bfb-8c70-89641e023735/standard-responses/1.0.1/standard-responses.raml
+  Errors: /exchange_modules/1674d8b0-3a4f-4bfb-8c70-89641e023735/standard-errors/1.0.0/standard-errors.raml
+  Operations: /exchange_modules/1674d8b0-3a4f-4bfb-8c70-89641e023735/data-management-operations/1.0.1/data-management-operations.raml
+  Security: /exchange_modules/1674d8b0-3a4f-4bfb-8c70-89641e023735/standard-security-traits/1.0.0/standard-security-traits.raml
+  CustomerDataTypes: /exchange_modules/3c6efc31-7c0e-4f89-86f3-d890571b4e48/customerdatatypes/1.0.7/customerdatatypes.raml
+  
+/ping:
+  is: [Security.traceable, Security.identifiable]
+  description: |-
+    This is an API heart-beat operation
+  get:
+    description: |-
+      This operation will return a **Status** object.
+
+    is: [ Operations.read: {
+            "request-media-type": "application/json",
+            "response-media-type": "application/json",
+            "response-200-type": Status,
+            "object-name": "Status"
+          }, 
+          Errors.default,
+          Errors.process
+      ]
+  post:
+    description: |-
+      This operation will query a **Status** object. 
+
+    is: [ Operations.searchOperation: {
+            "request-media-type": "application/json",
+            "response-media-type": "application/json",
+            "data-search-type": Status ,
+            "response-200-type": CustomResponse.Standard,
+            "object-name": "Status and with Custom Response"
+          }, 
+          Errors.default,
+          Errors.process
+      ]
+
+/customerAttributes:
+  is: [Security.traceable, Security.identifiable, Security.clientIdEnforceable]
+  description: |- 
+   This API will be used to POST SAP customer attribute data to be transformed by this API into Exceedra DB SAPI JSON format 
+  post:
+    is: [ Operations.create: {
+            "request-media-type": "application/json",
+            "response-media-type": "application/json",
+            "data-add-type": CustomerDataTypes.CustomerAttributes,
+            "response-201-type": CustomerDataTypes.CustomerAttributes,
+            "object-name": "Customer Attributes"
+          }, 
+          Errors.default,
+          Errors.process
+      ] 
+  /job/start:
+    is: [Security.traceable, Security.identifiable, Security.clientIdEnforceable]
+    description: |-
+      This is an operation to kick off the scheduled job for Customer Attributes via this request
+    post:
+      is: [ Operations.asyncRequest: {
+              "request-media-type": "application/json",
+              "response-media-type": "application/json",
+              "data-async-type": JobStart,
+              "response-202-type": StandardResponse.Default,
+              "object-name": "Scheduled Customer Attributes Job"
+          }, 
+          Errors.default,
+          Errors.process
+      ]
+
+/indirectCustomerMappings:
+  is: [Security.traceable, Security.identifiable, Security.clientIdEnforceable]
+  description: |- 
+   This API will be used to POST SAP customer indirect customer mapping data to be transformed by this API into Exceedra DB SAPI JSON format 
+  post:
+    is: [ Operations.create: {
+            "request-media-type": "application/json",
+            "response-media-type": "application/json",
+            "data-add-type": CustomerDataTypes.IndirectCustomerMappings,
+            "response-201-type": CustomerDataTypes.IndirectCustomerMappings,
+            "object-name": "Indirect Customer Mappings"
+          }, 
+          Errors.default,
+          Errors.process
+      ] 
+  /job/start:
+    is: [Security.traceable, Security.identifiable, Security.clientIdEnforceable]
+    description: |-
+      This is an operation to kick off the scheduled job for Customer Indirect Measures via this request
+    post:
+      is: [ Operations.asyncRequest: {
+              "request-media-type": "application/json",
+              "response-media-type": "application/json",
+              "data-async-type": JobStart,
+              "response-202-type": StandardResponse.Default,
+              "object-name": "Scheduled Indirect Customer Mappings Job"
+          }, 
+          Errors.default,
+          Errors.process
+      ]
+
+/customerHierarchies:
+  is: [Security.traceable, Security.identifiable, Security.clientIdEnforceable]
+  description: |- 
+   This API will be used to POST SAP customer hierarchies data to be transformed by this API into Exceedra DB SAPI JSON format 
+  post:
+    is: [ Operations.create: {
+            "request-media-type": "application/json",
+            "response-media-type": "application/json",
+            "data-add-type": CustomerDataTypes.CustomerHierarchies,
+            "response-201-type": CustomerDataTypes.CustomerHierarchies,
+            "object-name": "Customer Hierarchies"
+          }, 
+          Errors.default,
+          Errors.process
+      ] 
+  /job/start:
+    is: [Security.traceable, Security.identifiable, Security.clientIdEnforceable]
+    description: |-
+      This is an operation to kick off the scheduled job for Customer Hierarchies via this request
+    post:
+      is: [ Operations.asyncRequest: {
+              "request-media-type": "application/json",
+              "response-media-type": "application/json",
+              "data-async-type": JobStart,
+              "response-202-type": StandardResponse.Default,
+              "object-name": "Scheduled Customer Hierarchy Job"
+          }, 
+          Errors.default,
+          Errors.process
+      ]
